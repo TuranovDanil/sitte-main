@@ -3,14 +3,15 @@ from django.contrib.auth.models import AbstractUser
 
 from django.dispatch import Signal
 
-from .utilities import send_activation_notification, send_new_comment_notification
+from .utilities import  send_new_comment_notification
+# from .utilities import send_activation_notification
 from .utilities import get_timestamp_path
 from django.db.models.signals import post_save
 
 
 class AdvUser(AbstractUser):
-    is_activated = models.BooleanField(default=True, db_index=True,
-                                       verbose_name='Прошел активацию?')
+    # is_activated = models.BooleanField(default=True, db_index=True,
+    #                                    verbose_name='Прошел активацию?')
     send_messages = models.BooleanField(default=True,
                                         verbose_name='Оповещать при новых комментариях?')
 
@@ -111,11 +112,11 @@ class AdditionalImage(models.Model):
         verbose_name = 'Дополнительная иллюстрация'
 
 
-def user_registrated_dispatcher(sender, **kwargs):
-    send_activation_notification(kwargs['instance'])
-
-
-user_registrated.connect(user_registrated_dispatcher)
+# def user_registrated_dispatcher(sender, **kwargs):
+#     send_activation_notification(kwargs['instance'])
+#
+#
+# user_registrated.connect(user_registrated_dispatcher)
 
 
 class Comment(models.Model):

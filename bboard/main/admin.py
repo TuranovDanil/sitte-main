@@ -2,7 +2,7 @@ from django.contrib import admin
 import datetime
 
 from .models import AdvUser
-from .utilities import send_activation_notification
+# from .utilities import send_activation_notification
 from .models import SuperRubric, SubRubric
 from .forms import SubRubricForm
 from .models import Bb, AdditionalImage
@@ -40,14 +40,14 @@ class SuperRubricAdmin(admin.ModelAdmin):
 admin.site.register(SuperRubric, SuperRubricAdmin)
 
 
-def send_activation_notifications(modeladmin, request, queryset):
-    for rec in queryset:
-        if not rec.is_activated:
-            send_activation_notification(rec)
-    modeladmin.message_user(request, 'Письма с оповещениями отправлены')
-
-
-send_activation_notifications.short_description = 'Отправка писем с оповещениями об активации'
+# def send_activation_notifications(modeladmin, request, queryset):
+#     for rec in queryset:
+#         if not rec.is_activated:
+#             send_activation_notification(rec)
+#     modeladmin.message_user(request, 'Письма с оповещениями отправлены')
+#
+#
+# send_activation_notifications.short_description = 'Отправка писем с оповещениями об активации'
 
 
 class NoactivatedFilter(admin.SimpleListFilter):
@@ -76,17 +76,18 @@ class NoactivatedFilter(admin.SimpleListFilter):
 
 
 class AdvUserAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'is_activated', 'date_joined')
+    list_display = ('__str__', 'date_joined')
     search_fields = ('username', 'email', 'first_name', 'last_name')
     list_filter = (NoactivatedFilter,)
     fields = (
         ('username', 'email'),
         ('first_name', 'last_name'),
         ('is_staff', 'is_superuser'),
-        ('last_login', 'date_joined')
+        ('last_login', 'date_joined'),
+        ('password', 'is_active')
     )
     readonly_fields = ('last_login', 'date_joined',)
-    actions = (send_activation_notifications,)
+    # actions = (send_activation_notifications,)
 
 
 admin.site.register(AdvUser, AdvUserAdmin)

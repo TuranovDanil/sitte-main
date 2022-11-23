@@ -56,20 +56,20 @@ class DeleteUserView(LoginRequiredMixin, DeleteView):
         return get_object_or_404(queryset, pk=self.user_id)
 
 
-def user_activate(request, sign):
-    try:
-        username = signer.unsign(sign)
-    except BadSignature:
-        return render(request, 'main/bad_signature.html')
-    user = get_object_or_404(AdvUser, username=username)
-    if user.is_activated:
-        template = 'main/user_is_activated.html'
-    else:
-        template = 'main/activation_done.html'
-        user.is_activated = True
-        user.is_active = True
-        user.save()
-    return render(request, template)
+# def user_activate(request, sign):
+#     try:
+#         username = signer.unsign(sign)
+#     except BadSignature:
+#         return render(request, 'main/bad_signature.html')
+#     user = get_object_or_404(AdvUser, username=username)
+#     if user.is_activated:
+#         template = 'main/user_is_activated.html'
+#     else:
+#         template = 'main/activation_done.html'
+#         user.is_activated = True
+#         user.is_active = True
+#         user.save()
+#     return render(request, template)
 
 
 class RegisterDoneView(TemplateView):
